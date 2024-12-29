@@ -1,5 +1,6 @@
 import pygame as pg
 from src.game import Game
+from src.screen import Screen
 from src.settings import *
 
 
@@ -7,8 +8,12 @@ def main():
     pg.init()
     # TODO: Check for failed initialization
 
-    screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pg.SCALED)
-    pg.display.set_caption(SCREEN_CAPTION)
+    screen = Screen(
+        SCREEN_WIDTH, 
+        SCREEN_HEIGHT, 
+        'Pynnacola', 
+        background_color='green',
+        background_image=BACKGROUND_IMAGE)
 
     clock = pg.time.Clock()
 
@@ -21,8 +26,6 @@ def main():
                 running = False
             if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 running = False
-
-        screen.fill('green')
 
         pg.display.flip()
 

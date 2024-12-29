@@ -1,3 +1,4 @@
 class Game():
     def __init__(self):
-        pass
+        # Background
+        self.background = None
