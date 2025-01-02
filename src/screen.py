@@ -10,8 +10,6 @@ class Screen:
             width: int, 
             height: int, 
             caption: str, 
-            # background_color:tuple|str = (0, 0, 0),
-            # background_image:Path = None
             ):
         """
         Initialize the game screen.
@@ -28,4 +26,3 @@ class Screen:
         self.screen = pg.display.set_mode((width, height), pg.SCALED)
         pg.display.set_caption(self.caption)
 
-        

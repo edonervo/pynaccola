@@ -2,6 +2,7 @@ import pygame as pg
 from src.game import Game
 from src.screen import Screen
 from src.background import Background
+from src.card import Card
 from src.settings import *
 
 
@@ -24,8 +25,12 @@ def main():
 
     clock = pg.time.Clock()
 
-    game = Game()
+    # Game Logic
+    game = Game() #TODO logic
+    card = Card()
+    allsprites = pg.sprite.RenderPlain(card)
 
+    #Game loop
     running = True
     while running:
         for event in pg.event.get():
@@ -33,6 +38,10 @@ def main():
                 running = False
             if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 running = False
+        
+        allsprites.update()
+        screen.screen.blit(background.image, (0, 0))
+        allsprites.draw(screen.screen)
 
         pg.display.flip()
 
