@@ -1,19 +1,18 @@
 import pygame as pg
+from pathlib import Path
 
 class Background:
     def __init__(
             self, 
-            screen,
-            image_path,
-            screen_width,
-            screen_height,
+            screen: pg.Surface,
+            image_path: Path,
             color: tuple|str = (0, 0, 0)
             ):
         """Initialize the background with an image or color"""
         self.color = color
         self.image = pg.image.load(image_path).convert()
-        self.image = pg.transform.scale(self.image, (screen_width, screen_height))
         self.screen = screen
+        self.image = pg.transform.scale(self.image, self.screen.get_size())
         self.render()
 
     def render(self):

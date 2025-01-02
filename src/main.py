@@ -1,6 +1,7 @@
 import pygame as pg
 from src.game import Game
 from src.screen import Screen
+from src.background import Background
 from src.settings import *
 
 
@@ -11,9 +12,15 @@ def main():
     screen = Screen(
         SCREEN_WIDTH, 
         SCREEN_HEIGHT, 
-        'Pynnacola', 
-        background_color='green',
-        background_image=BACKGROUND_IMAGE)
+        'Pynnacola'
+    )
+    
+    background = Background(
+        screen=screen.screen,
+        image_path=BACKGROUND_IMAGE
+    )
+
+    background.render()
 
     clock = pg.time.Clock()
 
