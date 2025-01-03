@@ -33,13 +33,14 @@ def main():
     #Game loop
     running = True
     while running:
-        for event in pg.event.get():
+        events = pg.event.get()
+        for event in events:
             if event.type == pg.QUIT:
                 running = False
             if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                 running = False
         
-        allsprites.update()
+        allsprites.update(events)
         screen.screen.blit(background.image, (0, 0))
         allsprites.draw(screen.screen)
 

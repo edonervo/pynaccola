@@ -9,6 +9,28 @@ class Card(pg.sprite.Sprite):
         screen = pg.display.get_surface()
         self.area = screen.get_rect()
         self.rect.center = self.area.center
+        self.dragging = False
 
-    def update(self):
-        pass
+    def update(self, events):
+        """
+        Update the sprite's position based on mouse events.
+
+        Args:
+            events (list): List of Pygame events.
+        """
+        for event in events:
+            if event.type == pg.MOUSEBUTTONDOWN:
+                if self.rect.collidepoint(event.pos):
+                    self.dragging = True
+                    self.mouse_offset = (
+                        self.rect.x - event.pos[0],
+                        self.rect.y - event.pos[1]  
+                    )
+
+            elif event.type == pg.MOUSEBUTTONUP:
+                self.dragging = False
+            
+            elif event.type == pg.MOUSEMOTION:
+                if self.dragging:
+                    self.rect.x = event.pos[0] + self.mouse_offset[0]
+                    self.rect.y = event.pos[1] + self.mouse_offset[1]
