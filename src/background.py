@@ -13,7 +13,6 @@ class Background:
         self.image = pg.image.load(image_path).convert()
         self.screen = screen
         self.image = pg.transform.scale(self.image, self.screen.get_size())
-        self.render()
 
     def render(self):
         """Draw the background on the screen"""
