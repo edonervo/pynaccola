@@ -1,20 +1,35 @@
 import pygame as pg
+import warnings
 from src.utils import *
 from src.settings import *
 
 class Card(pg.sprite.Sprite):
     def __init__(self, 
-                 name: str,
+                 rank: str,
                  suit: str,
-                 rank: str
+                 source_file: Path = None,
+                 render: bool = True
                  ):
         pg.sprite.Sprite.__init__(self)
-        self.name = name
         self.suit = suit
         self.rank = rank
+        if 'joker' in rank.lower():
+            self.name = 'joker'
+        else:
+            self.name = f'{rank} of {suit}'
+        self.source_file = source_file
         self.value = CARDS_VALUE.get(self.rank)
-        self.image, self.rect = load_image(CARDS_DIR / self.name, 0.3)
+        try:
+            self.image, self.rect = load_image(CARDS_DIR / self.source_file, 0.3)
+        except:
+            warnings.warn(f'Not able to find source image for {self.name}, card cannot be rendered')
+        
+        # Render 
+        if render:
+            self.render()
+
         self.dragging = False
+
 
     def update(self, events):
         """
@@ -52,7 +67,7 @@ class CardsDatabase:
         """
         A database to manage all card data of the French Deck
         """
-        self.cards = []
+        self.cards = {}
         self._load_cards()
 
     def parse_card_filename(self, filename: str):
@@ -63,31 +78,29 @@ class CardsDatabase:
             filename (str): The filename (without extension) of the card image.
 
         Returns:
-            tuple: (name, suit, rank)
+            tuple: (suit, rank)
         """
         if 'joker' not in filename:
             rank = filename.split('_')[0]
-            suit = filename.split('_')[1]
-            name = f'{rank} of {suit}'
+            suit = filename.split('_')[2]
         else:
             rank = 'joker'
             suit = None
-            name = 'Joker'
 
-        return name, suit, rank
+        return suit, rank
 
     def _load_cards(self, directory: Path = CARDS_DIR):
         """Load cards in memory"""
         for file in directory.iterdir():
             if file.suffix.lower() == ".png":
                 # Parse card name, suit, and rank from the filename
-                name, suit, rank = self.parse_card_filename(file.stem)
+                suit, rank = self.parse_card_filename(file.stem)
                 card = Card(
-                    name=name,
                     suit=suit,
-                    rank=rank
+                    rank=rank,
+                    source_file=file
                 )
-                self.cards.append(card)
+                self.cards[card.name] = card
 
             else:
                 raise FileNotFoundError

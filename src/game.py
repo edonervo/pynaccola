@@ -16,7 +16,7 @@ class Game():
         # Screen
         self.screen = Screen(
             SCREEN_WIDTH,
-            SCREEN_HEIGHT,
+            SCREEN_HEIGHT,          
             SCREEN_CAPTION
         )
 
@@ -35,7 +35,7 @@ class Game():
         # Initialize Sprites and Groups
         ## Cards
         cards_db = CardsDatabase()    
-        self.card_sprites = pg.sprite.RenderPlain(cards_db.cards)
+        self.card_sprites = pg.sprite.RenderPlain(cards_db.cards['joker'])
 
     def handle_events(self):
         self.events = pg.event.get()
