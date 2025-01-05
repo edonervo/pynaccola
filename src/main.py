@@ -1,7 +1,7 @@
 import pygame as pg
 from src.game import Game
 from src.background import Background
-from src.card import Card
+from src.cards import Card
 from src.settings import *
 
 

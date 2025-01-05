@@ -3,7 +3,7 @@ from src.settings import *
 import pygame as pg
 
 def load_image(image_path: Path, scale:float = 1.0):
-    """Load an image and return image object""" 
+    """Load an image and return image object and rectangle""" 
     try:
         image = pg.image.load(image_path)
         if image.get_alpha() is None:

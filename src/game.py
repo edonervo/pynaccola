@@ -1,7 +1,7 @@
 import pygame as pg
 import pygame as pg
 from src.background import Background
-from src.card import Card
+from src.cards import Card, CardsDatabase
 from src.settings import *
 from src.screen import Screen
 
@@ -34,8 +34,8 @@ class Game():
 
         # Initialize Sprites and Groups
         ## Cards
-        card = Card()
-        self.card_sprites = pg.sprite.RenderPlain(card)
+        cards_db = CardsDatabase()    
+        self.card_sprites = pg.sprite.RenderPlain(cards_db.cards)
 
     def handle_events(self):
         self.events = pg.event.get()
