@@ -4,6 +4,17 @@ from src.background import Background
 from src.cards import Card, CardsDatabase
 from src.settings import *
 from src.screen import Screen
+from enum import Enum
+
+class GameState(Enum):
+    MENU = 0
+    GAMEPLAY = 1
+    PAUSE = 2
+    GAME_OVER = 3
+
+class GameStateManager:
+    def __init__(self):
+        self.current_state = GameState.MENU
 
 
 class Game():
@@ -30,7 +41,7 @@ class Game():
         self.clock = pg.time.Clock()
 
         # Game State
-        self.running = True
+        self.game_state = GameState.MENU
 
         # Initialize Sprites and Groups
         ## Cards
@@ -41,26 +52,44 @@ class Game():
         self.events = pg.event.get()
         for event in self.events:
             if event.type == pg.QUIT:
-                self.running = False
-            if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                self.running = False
+                self.quit_game()
 
     def update(self, events):   
         self.card_sprites.update(events)
         
-    def draw(self):
-        self.background.render()
+    def render(self):
+        if self.game_state == GameState.MENU:
+            self.render_menu()
+        self.background.render_background()
         self.screen.screen.blit(self.background.image, (0, 0))
         self.card_sprites.draw(self.screen.screen)
 
         pg.display.flip()
 
+    def render_menu(self):
+        pass
+
     def run(self):
-        while self.running:
+        while True:
             self.clock.tick(FPS)
             self.handle_events()
             self.update(self.events)
-            self.draw()
+            self.render()
+
+
+    def main_menu(self):
+        """
+        Display the main menu
+        """
+        pass
+
+    def quit_game(self):
+        """
+        Quits the game
+        """
+        pg.quit()
+        quit()
+
 
             
 

@@ -11,10 +11,8 @@ def main():
 
     game = Game()
 
-    while game.running:
+    while True:
         game.run()
-    pg.quit()
-
 
 if __name__ == '__main__':
     main()

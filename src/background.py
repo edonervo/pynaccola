@@ -14,7 +14,7 @@ class Background:
         self.screen = screen
         self.image = pg.transform.scale(self.image, self.screen.get_size())
 
-    def render(self):
+    def render_background(self):
         """Draw the background on the screen"""
         # TODO: add logic to decide between color or image
         # self.screen.fill(self.color)  
