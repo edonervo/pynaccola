@@ -4,6 +4,7 @@ from src.background import Background
 from src.cards import Card, CardsDatabase
 from src.settings import *
 from src.screen import Screen
+from src.menu import Menu
 from enum import Enum
 
 class GameState(Enum):
@@ -43,31 +44,16 @@ class Game():
         # Game State
         self.game_state = GameState.MENU
 
+        # Menu
+        self.menu = Menu(
+            self.screen.screen,
+            MENU_OPTIONS
+        )
+
         # Initialize Sprites and Groups
         ## Cards
         cards_db = CardsDatabase()    
         self.card_sprites = pg.sprite.RenderPlain(cards_db.cards['joker'])
-
-    def handle_events(self):
-        self.events = pg.event.get()
-        for event in self.events:
-            if event.type == pg.QUIT:
-                self.quit_game()
-
-    def update(self, events):   
-        self.card_sprites.update(events)
-        
-    def render(self):
-        if self.game_state == GameState.MENU:
-            self.render_menu()
-        self.background.render_background()
-        self.screen.screen.blit(self.background.image, (0, 0))
-        self.card_sprites.draw(self.screen.screen)
-
-        pg.display.flip()
-
-    def render_menu(self):
-        pass
 
     def run(self):
         while True:
@@ -76,6 +62,32 @@ class Game():
             self.update(self.events)
             self.render()
 
+    def handle_events(self):
+        self.events = pg.event.get()
+        for event in self.events:
+            if event.type == pg.QUIT:
+                self.quit_game()                
+
+    def update(self, events):
+        if self.game_state == GameState.MENU:
+            self.menu.update(events)
+        elif self.game_state == GameState.GAMEPLAY:
+            self.card_sprites.update(events)
+        else:
+            pass
+        
+    def render(self):
+        self.background.render_background()
+        self.screen.screen.blit(self.background.image, (0, 0))
+        if self.game_state == GameState.MENU:
+            self.render_menu()
+        if self.game_state == GameState.GAMEPLAY:
+            self.card_sprites.draw(self.screen.screen)
+
+        pg.display.flip()
+
+    def render_menu(self):
+        self.menu.render()
 
     def main_menu(self):
         """

@@ -2,13 +2,10 @@ import pygame as pg
 from enum import Enum
 
 
-class MenuChoice:
-    PLAY = 0
-
 class Menu:
     def __init__(self,
                  screen: pg.Surface,
-                 options,
+                 options: list[str],
                  font_name='Arial',
                  font_size=36,
                  text_color = (255, 255, 255),
@@ -30,4 +27,36 @@ class Menu:
         self.font = pg.font.Font(pg.font.match_font(font_name), font_size)
         self.text_color = text_color
         self.selected_color = selected_color
-        self.current_selection = MenuChoice.PLAY
+        self.current_selection = 0
+
+    def render(self):
+        """
+        Render the Menu on the screen
+        """
+        menu_width, menu_height = self.screen.get_size()
+        total_height = len(self.options) * self.font.get_height()
+
+        for i, option in enumerate(self.options):
+            color = self.selected_color if i == self.current_selection else self.text_color
+            text_surface = self.font.render(option, True, color)
+            text_rect = text_surface.get_rect(center=(menu_width // 2, (menu_height // 2 - total_height // 2) + i * self.font.get_height()))
+            self.screen.blit(text_surface, text_rect)
+
+    def update(self, events: list[pg.event.Event]):
+        """
+        Update the Menu based on user input
+        """
+        for event in events:
+            if event.type == pg.KEYDOWN:
+                print('KEYDOWN')
+                if event.type == pg.K_UP:
+                    print('KEYUP')
+                    self.current_selection = (self.current_selection - 1) % len(self.options)
+                elif event.type == pg.K_DOWN:
+                    print('KEYUP')
+                    self.current_selection = (self.current_selection + 1) % len(self.options)
+                elif event.key == pg.K_RETURN:
+                    print('KEYRETURN')
+                    return self.options[self.current_selection] 
+            
+
